@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cmath>
 
 #include <stdio.h>
 //#include "Drawing.h"
@@ -97,6 +98,22 @@ bool load()
   return true;
 }
 
+/*********************************************
+*240<=h<300,  0<=s<=1,  0<=l<=1
+*********************************************/
+sf::Color hslToColor(float h, float s, float l)
+{
+  if(s>1)
+	s = 1;
+  if(l>1)
+	l = 1;
+  float c = (1-abs(2*l-1)*s;
+  float x = c*(1-abs(((h/60)%2)-1));
+  float m = l -c/2;
+  sf::Color color((x+m)*255,m*255,((c+m)255);
+  return color;
+}
+
 void drawPoint(int col, int row,sf::RenderWindow& window)
 {
   sf::RectangleShape point(sf::Vector2f(1, 1));
@@ -106,7 +123,8 @@ void drawPoint(int col, int row,sf::RenderWindow& window)
     c=grid[col][row]->i;
   else
     c=grid[col][row]->j;
-  color = sf::Color(c*(0xFFFFFF/50)*0x100+0xFF);
+  color = hslToColor(240,(100-c*2)/100,(c*5)/100);
+  //color = sf::Color(c*(0xFFFFFF/50)*0x100+0xFF);
   //color = sf::Color(c*5,c*5,c*255);
   point.setFillColor(color);
   point.setPosition(col, row);
